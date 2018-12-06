@@ -31,6 +31,7 @@ public class BasicController {
 
     @RequestMapping(value = "/todos/{todoId}", method = RequestMethod.GET)
     public Todo getPath(@PathVariable int todoId) {
+        // pr
         Todo todo1 = new Todo(1L, "문서쓰기");
         Todo todo2 = new Todo(2L, "공부하기");
         Todo todo3 = new Todo(3L, "잠자기");
