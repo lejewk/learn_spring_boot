@@ -1,6 +1,7 @@
 package com.devwook88.learn_spring_boot.controller;
 
 import com.devwook88.learn_spring_boot.model.Todo;
+import com.devwook88.learn_spring_boot.model.TodoResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -8,6 +9,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
+
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping("/basic")
@@ -27,6 +31,14 @@ public class BasicController {
     @RequestMapping(value = "/todor", method = RequestMethod.POST)
     public ResponseEntity<Todo> postBasicResponseEntity(@RequestParam(value = "todoTitle") String todoTitle) {
         return new ResponseEntity(new Todo(counter.incrementAndGet(), todoTitle), HttpStatus.CREATED);
+    }
+
+    @RequestMapping(value = "/todoh", method = RequestMethod.GET)
+    public ResponseEntity<TodoResource> geth(@RequestParam(value = "todoTitle") String todoTitle) {
+        TodoResource todoResource = new TodoResource(todoTitle);
+        todoResource.add(linkTo(methodOn(BasicController.class).geth(todoTitle)).withSelfRel());
+
+        return new ResponseEntity(todoResource, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/todos/{todoId}", method = RequestMethod.GET)
